@@ -85,7 +85,7 @@ public class JSObject {
 
         Set<String> keySet = children.keySet();
         for (String key : keySet) {
-            sb.append(children.get(key).toString(name+".") + "\n");
+            sb.append(children.get(key).toString(indent + name+".") + "\n");
         }
 
         return sb.toString();

@@ -19,9 +19,8 @@ import java.util.List;
  */
 class O3DJSParser {
 
-    String f = "C:\\IDE\\3D\\o3d samples\\o3djs\\base.js";
-
     JSObject jsObject = new JSObject("ROOT");
+    boolean debug = false;
 
     public JSObject getJsObject() {
         return jsObject;
@@ -41,28 +40,37 @@ class O3DJSParser {
     }
 
     // i.e.: o3djs . getObjectByName = function ( name , opt_obj )
-    //
+    // or: o3djs.base.isArray = function(value)
     public void printExpr(ArrayList<String> al) {
+        JSObject myJsObj = jsObject;
+        // 1st get to correct object i.e.
+        for (int i = 1; i < al.size(); i+=2) {
+            if( ! ".".equals(al.get(i)) )
+                break;
+            if( debug)
+                System.out.println(al.get(i-1));
+            myJsObj = myJsObj.getObject(al.get(i-1));
+        }
+
         int funcIndex = al.indexOf("function");
-        if( funcIndex > 0 )
-        {
-            List<String> params = al.subList(funcIndex + 2, al.size()-1);
-            
-            jsObject.getObject(al.get(0)).addFunction(al.get(funcIndex-2), params);
+        if (funcIndex > 0) {
+            List<String> params = al.subList(funcIndex + 2, al.size() - 1);
+
+            myJsObj.addFunction(al.get(funcIndex - 2), params);
             //if( ".".equals( al.get(1)) && "function".equals( al.get(5)) )
-        } else if (al.size()>0){
-            jsObject.addObject(al.get(0));
+        } else if (al.size() > 0) {
+            myJsObj.addObject(al.get(0));
         }
-        
-        for (String string : al) {
-            System.out.print(string + " ");
+        if (debug&&false) {
+            for (String string : al) {
+                System.out.print(string + " ");
+            }
+            System.out.println();
         }
-        System.out.println();
-        
     }
 
-    public void parse() throws IOException {
-        Reader reader = new FileReader(f);
+    public void parse(String file) throws IOException {
+        Reader reader = new FileReader(file);
         StreamTokenizer st = new StreamTokenizer(reader);
 
 //     st.slashSlashComments( true ); */
@@ -104,6 +112,7 @@ class O3DJSParser {
 
     public static void main(String[] args) throws IOException {
         O3DJSParser op = new O3DJSParser();
-        op.parse();
+        op.debug=true;
+        op.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\util.js");
     }
 }
