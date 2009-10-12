@@ -361,7 +361,10 @@ public class O3DIDEView extends FrameView {
     private void jButtonParseO3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonParseO3DActionPerformed
         // TODO add your handling code here:
         try {
-            o3dParser.parse();
+            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\base.js");
+            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\util.js");
+            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\math.js");
+            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\rendergraph.js");
         } catch (IOException ex) {
             Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
         }
