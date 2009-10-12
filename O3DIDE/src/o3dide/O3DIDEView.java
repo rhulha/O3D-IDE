@@ -147,6 +147,7 @@ public class O3DIDEView extends FrameView {
         jButtonLoadHTML = new javax.swing.JButton();
         jButtonParseO3D = new javax.swing.JButton();
         jButtonRepaint = new javax.swing.JButton();
+        jButtonDebug = new javax.swing.JButton();
 
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -290,6 +291,18 @@ public class O3DIDEView extends FrameView {
         });
         jToolBarMain.add(jButtonRepaint);
 
+        jButtonDebug.setText(resourceMap.getString("jButtonDebug.text")); // NOI18N
+        jButtonDebug.setFocusable(false);
+        jButtonDebug.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDebug.setName("jButtonDebug"); // NOI18N
+        jButtonDebug.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonDebug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDebugActionPerformed(evt);
+            }
+        });
+        jToolBarMain.add(jButtonDebug);
+
         setComponent(mainPanel);
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
@@ -358,7 +371,14 @@ public class O3DIDEView extends FrameView {
         // TODO add your handling code here:
         jScrollPaneEditor1.repaint();
     }//GEN-LAST:event_jButtonRepaintActionPerformed
+
+    private void jButtonDebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDebugActionPerformed
+        // TODO add your handling code here:
+        jTextAreaEditor1.setText(o3dParser.getJsObject().toString());
+    }//GEN-LAST:event_jButtonDebugActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonDebug;
     private javax.swing.JButton jButtonLoadHTML;
     private javax.swing.JButton jButtonParseO3D;
     private javax.swing.JButton jButtonRepaint;
