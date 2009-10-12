@@ -35,7 +35,7 @@ public class JSObject {
         if (!children.containsKey(name)) {
             children.put(name, new JSObject(name));
         } else {
-            System.out.println("warn o " + name);
+            //System.out.println("warn o " + name);
         }
     }
 
@@ -43,7 +43,7 @@ public class JSObject {
         if (!children.containsKey(name)) {
             children.put(name, new JSObject(name, parameters));
         } else {
-            System.out.println("warn f " + name);
+            //System.out.println("warn f " + name);
         }
     }
 
