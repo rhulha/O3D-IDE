@@ -80,7 +80,7 @@ public class SmartSense implements KeyListener {
             }
             Collections.reverse(reverseIdentifierNames);
             for (String id : reverseIdentifierNames) {
-                System.out.println(id+".");
+                //System.out.println(id+".");
                 if(id.length()>0)
                  myJsObject = myJsObject.getObject(id);
             }
