@@ -3,6 +3,7 @@
  */
 package o3dide;
 
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 /**
  * The application's main frame.
@@ -36,13 +38,13 @@ public class O3DIDEView extends FrameView {
         super(app);
 
         initComponents();
-        
+
         jList = new JList();
         jList.setModel(new DefaultListModel());
 
         jPopupMenuSmartSense.add(new JScrollPane(jList));
-        SmartSense smartSense = new SmartSense(jTextArea1, jList, o3dParser, jPopupMenuSmartSense);
-        jTextArea1.addKeyListener(smartSense);
+        SmartSense smartSense = new SmartSense(jTextAreaEditor1, jList, o3dParser, jPopupMenuSmartSense);
+        jTextAreaEditor1.addKeyListener(smartSense);
 
         jList.addKeyListener(smartSense);
 
@@ -124,10 +126,10 @@ public class O3DIDEView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTabbedPaneEditor = new javax.swing.JTabbedPane();
+        jPanelEditor1 = new javax.swing.JPanel();
+        jScrollPaneEditor1 = new javax.swing.JScrollPane();
+        jTextAreaEditor1 = new javax.swing.JTextArea();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -144,29 +146,31 @@ public class O3DIDEView extends FrameView {
         jToolBarMain = new javax.swing.JToolBar();
         jButtonLoadHTML = new javax.swing.JButton();
         jButtonParseO3D = new javax.swing.JButton();
+        jButtonRepaint = new javax.swing.JButton();
 
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setPreferredSize(new java.awt.Dimension(800, 600));
         mainPanel.setLayout(new java.awt.BorderLayout());
 
-        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
+        jTabbedPaneEditor.setName("jTabbedPaneEditor"); // NOI18N
 
-        jPanel1.setName("jPanel1"); // NOI18N
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanelEditor1.setName("jPanelEditor1"); // NOI18N
+        jPanelEditor1.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
+        jScrollPaneEditor1.setName("jScrollPaneEditor1"); // NOI18N
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setName("jTextArea1"); // NOI18N
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextAreaEditor1.setColumns(20);
+        jTextAreaEditor1.setRows(5);
+        jTextAreaEditor1.setMargin(new java.awt.Insets(2, 10, 2, 2));
+        jTextAreaEditor1.setName("jTextAreaEditor1"); // NOI18N
+        jScrollPaneEditor1.setViewportView(jTextAreaEditor1);
 
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanelEditor1.add(jScrollPaneEditor1, java.awt.BorderLayout.CENTER);
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(o3dide.O3DIDEApp.class).getContext().getResourceMap(O3DIDEView.class);
-        jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
+        jTabbedPaneEditor.addTab(resourceMap.getString("jPanelEditor1.TabConstraints.tabTitle"), jPanelEditor1); // NOI18N
 
-        mainPanel.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        mainPanel.add(jTabbedPaneEditor, java.awt.BorderLayout.CENTER);
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -274,6 +278,18 @@ public class O3DIDEView extends FrameView {
         });
         jToolBarMain.add(jButtonParseO3D);
 
+        jButtonRepaint.setText(resourceMap.getString("jButtonRepaint.text")); // NOI18N
+        jButtonRepaint.setFocusable(false);
+        jButtonRepaint.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonRepaint.setName("jButtonRepaint"); // NOI18N
+        jButtonRepaint.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonRepaint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRepaintActionPerformed(evt);
+            }
+        });
+        jToolBarMain.add(jButtonRepaint);
+
         setComponent(mainPanel);
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
@@ -291,7 +307,7 @@ public class O3DIDEView extends FrameView {
                 FileInputStream fis = new FileInputStream(sf);
                 fis.read(buf);
                 fis.close();
-                jTextArea1.setText(new String(buf));
+                jTextAreaEditor1.setText(new String(buf));
             } catch (IOException ex) {
                 Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -301,21 +317,32 @@ public class O3DIDEView extends FrameView {
 
     private void jMenuItemTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTestActionPerformed
         // TODO add your handling code here:
-
     }//GEN-LAST:event_jMenuItemTestActionPerformed
 
     private void jButtonLoadHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadHTMLActionPerformed
         // TODO add your handling code here:
-                File sf = new File("C:\\IDE\\3D\\RayO3D\\helloworld.html");
-            byte buf[] = new byte[(int) sf.length()];
-            try {
-                FileInputStream fis = new FileInputStream(sf);
-                fis.read(buf);
-                fis.close();
-                jTextArea1.setText(new String(buf));
-            } catch (IOException ex) {
-                Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        File sf = new File("C:\\IDE\\3D\\RayO3D\\helloworld.html");
+        byte buf[] = new byte[(int) sf.length()];
+        try {
+            FileInputStream fis = new FileInputStream(sf);
+            fis.read(buf);
+            fis.close();
+            //jTextArea1.replaceRange(new String(buf), 0, 0);
+            jTextAreaEditor1.setText(new String(buf));
+            jTextAreaEditor1.setCaretPosition(0);
+            jTextAreaEditor1.requestFocus();
+            SwingUtilities.invokeLater(new Runnable() {
+
+                public void run() {
+                    jScrollPaneEditor1.scrollRectToVisible(new Rectangle(0, 0, 0, 0));
+                    jScrollPaneEditor1.repaint();
+                }
+            });
+
+
+        } catch (IOException ex) {
+            Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonLoadHTMLActionPerformed
 
     private void jButtonParseO3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonParseO3DActionPerformed
@@ -327,16 +354,21 @@ public class O3DIDEView extends FrameView {
         }
     }//GEN-LAST:event_jButtonParseO3DActionPerformed
 
+    private void jButtonRepaintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRepaintActionPerformed
+        // TODO add your handling code here:
+        jScrollPaneEditor1.repaint();
+    }//GEN-LAST:event_jButtonRepaintActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLoadHTML;
     private javax.swing.JButton jButtonParseO3D;
+    private javax.swing.JButton jButtonRepaint;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemTest;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelEditor1;
     private javax.swing.JPopupMenu jPopupMenuSmartSense;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPaneEditor1;
+    private javax.swing.JTabbedPane jTabbedPaneEditor;
+    private javax.swing.JTextArea jTextAreaEditor1;
     private javax.swing.JToolBar jToolBarMain;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;

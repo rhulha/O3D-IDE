@@ -53,10 +53,12 @@ class O3DJSParser {
         } else if (al.size()>0){
             jsObject.addObject(al.get(0));
         }
+        /*
         for (String string : al) {
             System.out.print(string + " ");
         }
         System.out.println();
+        */
     }
 
     public void parse() throws IOException {
