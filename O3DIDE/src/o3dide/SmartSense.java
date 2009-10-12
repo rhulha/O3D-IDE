@@ -49,8 +49,9 @@ public class SmartSense implements KeyListener {
             JTextArea source = (JTextArea) e.getSource();
             Point cp = source.getCaret().getMagicCaretPosition();
             try {
-
-                String text = source.getText(source.getCaretPosition() - 10, 10);
+                String text = "";
+                if( source.getCaretPosition()>0)
+                    text = source.getText(source.getCaretPosition() - 10, 10);
                 int last = text.lastIndexOf(' ');
                 if (last > 0) {
                     text = text.substring(last);
