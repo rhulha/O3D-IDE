@@ -3,13 +3,10 @@
  */
 package o3dide;
 
-import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.BadLocationException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -17,8 +14,8 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.io.FileInputStream;
+import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -26,8 +23,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 /**
  * The application's main frame.
@@ -42,55 +37,14 @@ public class O3DIDEView extends FrameView {
 
         initComponents();
         
+        jList = new JList();
+        jList.setModel(new DefaultListModel());
 
-        String[] items = new String[100];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = "item 0" + i;
+        jPopupMenuSmartSense.add(new JScrollPane(jList));
+        SmartSense smartSense = new SmartSense(jTextArea1, jList, o3dParser, jPopupMenuSmartSense);
+        jTextArea1.addKeyListener(smartSense);
 
-        }
-
-        jList = new JList(items);
-
-        jPopupMenu1.add(new JScrollPane(jList));
-
-        jTextArea1.addKeyListener(new KeyAdapter() {
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if( ' ' == e.getKeyChar() && e.getModifiers() == KeyEvent.CTRL_MASK)
-                {
-                    JTextArea source = (JTextArea) e.getSource();
-                    Point cp = source.getCaret().getMagicCaretPosition();
-                    try {
-
-                        String text = source.getText(source.getCaretPosition() - 10, 10);
-                        int last = text.lastIndexOf(' ');
-                        if( last > 0)
-                            text = text.substring(last);
-                        //jMenuItem1.setText(text);
-                        System.out.println(text);
-                    } catch (Exception ex) {
-                        Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    jPopupMenu1.show(source, cp.x, cp.y+16);
-                    SwingUtilities.invokeLater(new Runnable() {
-
-                        public void run() {
-                            jList.requestFocus();
-                        }
-                    });
-                }
-                super.keyTyped(e);
-            }
-
-
-
-        });
+        jList.addKeyListener(smartSense);
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -186,10 +140,10 @@ public class O3DIDEView extends FrameView {
         statusMessageLabel = new javax.swing.JLabel();
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jPopupMenuSmartSense = new javax.swing.JPopupMenu();
+        jToolBarMain = new javax.swing.JToolBar();
+        jButtonLoadHTML = new javax.swing.JButton();
+        jButtonParseO3D = new javax.swing.JButton();
 
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -290,40 +244,40 @@ public class O3DIDEView extends FrameView {
                 .addGap(3, 3, 3))
         );
 
-        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
+        jPopupMenuSmartSense.setName("jPopupMenuSmartSense"); // NOI18N
 
-        jToolBar1.setRollover(true);
-        jToolBar1.setName("jToolBar1"); // NOI18N
+        jToolBarMain.setRollover(true);
+        jToolBarMain.setName("jToolBarMain"); // NOI18N
 
-        jButton1.setIcon(resourceMap.getIcon("jButton1.icon")); // NOI18N
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonLoadHTML.setIcon(resourceMap.getIcon("jButtonLoadHTML.icon")); // NOI18N
+        jButtonLoadHTML.setText(resourceMap.getString("jButtonLoadHTML.text")); // NOI18N
+        jButtonLoadHTML.setFocusable(false);
+        jButtonLoadHTML.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonLoadHTML.setName("jButtonLoadHTML"); // NOI18N
+        jButtonLoadHTML.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonLoadHTML.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonLoadHTMLActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBarMain.add(jButtonLoadHTML);
 
-        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setName("jButton2"); // NOI18N
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonParseO3D.setText(resourceMap.getString("jButtonParseO3D.text")); // NOI18N
+        jButtonParseO3D.setFocusable(false);
+        jButtonParseO3D.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonParseO3D.setName("jButtonParseO3D"); // NOI18N
+        jButtonParseO3D.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonParseO3D.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonParseO3DActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton2);
+        jToolBarMain.add(jButtonParseO3D);
 
         setComponent(mainPanel);
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
-        setToolBar(jToolBar1);
+        setToolBar(jToolBarMain);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
@@ -350,7 +304,7 @@ public class O3DIDEView extends FrameView {
 
     }//GEN-LAST:event_jMenuItemTestActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonLoadHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadHTMLActionPerformed
         // TODO add your handling code here:
                 File sf = new File("C:\\IDE\\3D\\RayO3D\\helloworld.html");
             byte buf[] = new byte[(int) sf.length()];
@@ -362,28 +316,28 @@ public class O3DIDEView extends FrameView {
             } catch (IOException ex) {
                 Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
             }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonLoadHTMLActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonParseO3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonParseO3DActionPerformed
         // TODO add your handling code here:
         try {
             o3dParser.parse();
         } catch (IOException ex) {
             Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonParseO3DActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonLoadHTML;
+    private javax.swing.JButton jButtonParseO3D;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemTest;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenuSmartSense;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBarMain;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
