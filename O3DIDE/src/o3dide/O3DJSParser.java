@@ -48,17 +48,17 @@ class O3DJSParser {
         {
             List<String> params = al.subList(funcIndex + 2, al.size()-1);
             
-            jsObject.addFunction(al.get(0), params);
+            jsObject.getObject(al.get(0)).addFunction(al.get(funcIndex-2), params);
             //if( ".".equals( al.get(1)) && "function".equals( al.get(5)) )
         } else if (al.size()>0){
             jsObject.addObject(al.get(0));
         }
-        /*
+        
         for (String string : al) {
             System.out.print(string + " ");
         }
         System.out.println();
-        */
+        
     }
 
     public void parse() throws IOException {
