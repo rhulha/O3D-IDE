@@ -208,46 +208,46 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPopupMenu" name="jPopupMenu1">
+    <Container class="javax.swing.JPopupMenu" name="jPopupMenuSmartSense">
       <Properties>
-        <Property name="name" type="java.lang.String" value="jPopupMenu1" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="jPopupMenuSmartSense" noResource="true"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
     </Container>
-    <Container class="javax.swing.JToolBar" name="jToolBar1">
+    <Container class="javax.swing.JToolBar" name="jToolBarMain">
       <Properties>
         <Property name="rollover" type="boolean" value="true"/>
-        <Property name="name" type="java.lang.String" value="jToolBar1" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="jToolBarMain" noResource="true"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="jButtonLoadHTML">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" resourceKey="jButton1.icon"/>
-            <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="jButtonLoadHTML.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="jButtonLoadHTML.text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="jButtonLoadHTML" noResource="true"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonLoadHTMLActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="jButtonParseO3D">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jButton2.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="jButtonParseO3D.text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="name" type="java.lang.String" value="jButton2" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="jButtonParseO3D" noResource="true"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonParseO3DActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -264,7 +264,7 @@
       <ComponentRef name="statusPanel"/>
     </Property>
     <Property name="toolBar" type="javax.swing.JToolBar" editor="org.netbeans.modules.form.ComponentChooserEditor">
-      <ComponentRef name="jToolBar1"/>
+      <ComponentRef name="jToolBarMain"/>
     </Property>
   </Properties>
   <AuxValues>

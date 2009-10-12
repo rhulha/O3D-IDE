@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -17,6 +20,12 @@ import java.util.ArrayList;
 class O3DJSParser {
 
     String f = "C:\\IDE\\3D\\o3d samples\\o3djs\\base.js";
+
+    JSObject jsObject = new JSObject("ROOT");
+
+    public JSObject getJsObject() {
+        return jsObject;
+    }
 
     public void swallowBlock(StreamTokenizer st) throws IOException {
         for (int tval; (tval = st.nextToken()) != StreamTokenizer.TT_EOF;) {
@@ -31,7 +40,19 @@ class O3DJSParser {
         }
     }
 
+    // i.e.: o3djs . getObjectByName = function ( name , opt_obj )
+    //
     public void printExpr(ArrayList<String> al) {
+        int funcIndex = al.indexOf("function");
+        if( funcIndex > 0 )
+        {
+            List<String> params = al.subList(funcIndex + 2, al.size()-1);
+            
+            jsObject.addFunction(al.get(0), params);
+            //if( ".".equals( al.get(1)) && "function".equals( al.get(5)) )
+        } else if (al.size()>0){
+            jsObject.addObject(al.get(0));
+        }
         for (String string : al) {
             System.out.print(string + " ");
         }
@@ -44,9 +65,11 @@ class O3DJSParser {
 
 //     st.slashSlashComments( true ); */
         st.slashStarComments(true);
-        //st.ordinaryChar('/');
         st.wordChars('_', '_');
-        st.parseNumbers();
+        //st.parseNumbers();
+        st.ordinaryChar('.');
+        st.whitespaceChars(',', ',');
+        //st.quoteChar('\'');
         st.eolIsSignificant(true);
 
         ArrayList<String> expr = new ArrayList<String>();
