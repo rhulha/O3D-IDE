@@ -330,11 +330,14 @@ public class O3DIDEView extends FrameView {
 
     private void jMenuItemTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTestActionPerformed
         // TODO add your handling code here:
+        System.out.println(Utils.getJarLocation());
+        System.out.println(Utils.getUserDirLocation());
+
     }//GEN-LAST:event_jMenuItemTestActionPerformed
 
     private void jButtonLoadHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadHTMLActionPerformed
         // TODO add your handling code here:
-        File sf = new File("C:\\IDE\\3D\\RayO3D\\helloworld.html");
+        File sf = new File( Utils.getBestJarLocation(), "o3djs/helloworld.html");
         byte buf[] = new byte[(int) sf.length()];
         try {
             FileInputStream fis = new FileInputStream(sf);
@@ -361,10 +364,10 @@ public class O3DIDEView extends FrameView {
     private void jButtonParseO3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonParseO3DActionPerformed
         // TODO add your handling code here:
         try {
-            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\base.js");
-            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\util.js");
-            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\math.js");
-            o3dParser.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\rendergraph.js");
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/base.js"));
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/util.js"));
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/math.js"));
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/rendergraph.js"));
         } catch (IOException ex) {
             Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
         }

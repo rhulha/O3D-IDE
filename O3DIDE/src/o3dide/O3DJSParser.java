@@ -4,13 +4,12 @@
  */
 package o3dide;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -69,7 +68,7 @@ class O3DJSParser {
         }
     }
 
-    public void parse(String file) throws IOException {
+    public void parse(File file) throws IOException {
         Reader reader = new FileReader(file);
         StreamTokenizer st = new StreamTokenizer(reader);
 
@@ -113,6 +112,6 @@ class O3DJSParser {
     public static void main(String[] args) throws IOException {
         O3DJSParser op = new O3DJSParser();
         op.debug=true;
-        op.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\util.js");
+        //op.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\util.js");
     }
 }
