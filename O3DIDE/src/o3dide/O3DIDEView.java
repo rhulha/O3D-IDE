@@ -39,6 +39,7 @@ public class O3DIDEView extends FrameView {
         initComponents();
 
         actions = new Actions(jTextAreaEditor1, jScrollPaneEditor1);
+        actions.parseO3DJSFiles(o3dParser);
 
         jList = new JList();
         jList.setModel(new DefaultListModel());
@@ -134,15 +135,15 @@ public class O3DIDEView extends FrameView {
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
-        jMenuItemTest = new javax.swing.JMenuItem();
+        jMenuItemExampleCube = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         jMenuTemplates = new javax.swing.JMenu();
         jMenuItemHTMLBase = new javax.swing.JMenuItem();
         jMenuItemRequire = new javax.swing.JMenuItem();
         jMenuItemInit = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
-        javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         jMenuItemDebugParsing = new javax.swing.JMenuItem();
+        javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
         javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
         statusMessageLabel = new javax.swing.JLabel();
@@ -150,10 +151,8 @@ public class O3DIDEView extends FrameView {
         progressBar = new javax.swing.JProgressBar();
         jPopupMenuSmartSense = new javax.swing.JPopupMenu();
         jToolBarMain = new javax.swing.JToolBar();
-        jButtonLoadHTML = new javax.swing.JButton();
-        jButtonParseO3D = new javax.swing.JButton();
-        jButtonRepaint = new javax.swing.JButton();
         jButtonRun = new javax.swing.JButton();
+        jButtonClear = new javax.swing.JButton();
 
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -184,6 +183,7 @@ public class O3DIDEView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
+        jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemOpen.setText(resourceMap.getString("jMenuItemOpen.text")); // NOI18N
         jMenuItemOpen.setName("jMenuItemOpen"); // NOI18N
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -193,14 +193,15 @@ public class O3DIDEView extends FrameView {
         });
         fileMenu.add(jMenuItemOpen);
 
-        jMenuItemTest.setText(resourceMap.getString("jMenuItemTest.text")); // NOI18N
-        jMenuItemTest.setName("jMenuItemTest"); // NOI18N
-        jMenuItemTest.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemExampleCube.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemExampleCube.setText(resourceMap.getString("jMenuItemExampleCube.text")); // NOI18N
+        jMenuItemExampleCube.setName("jMenuItemExampleCube"); // NOI18N
+        jMenuItemExampleCube.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemTestActionPerformed(evt);
+                jMenuItemExampleCubeActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItemTest);
+        fileMenu.add(jMenuItemExampleCube);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(o3dide.O3DIDEApp.class).getContext().getActionMap(O3DIDEView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
@@ -212,6 +213,7 @@ public class O3DIDEView extends FrameView {
         jMenuTemplates.setText(resourceMap.getString("jMenuTemplates.text")); // NOI18N
         jMenuTemplates.setName("jMenuTemplates"); // NOI18N
 
+        jMenuItemHTMLBase.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemHTMLBase.setText(resourceMap.getString("jMenuItemHTMLBase.text")); // NOI18N
         jMenuItemHTMLBase.setName("jMenuItemHTMLBase"); // NOI18N
         jMenuItemHTMLBase.addActionListener(new java.awt.event.ActionListener() {
@@ -221,6 +223,7 @@ public class O3DIDEView extends FrameView {
         });
         jMenuTemplates.add(jMenuItemHTMLBase);
 
+        jMenuItemRequire.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRequire.setText(resourceMap.getString("jMenuItemRequire.text")); // NOI18N
         jMenuItemRequire.setName("jMenuItemRequire"); // NOI18N
         jMenuItemRequire.addActionListener(new java.awt.event.ActionListener() {
@@ -230,6 +233,7 @@ public class O3DIDEView extends FrameView {
         });
         jMenuTemplates.add(jMenuItemRequire);
 
+        jMenuItemInit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemInit.setText(resourceMap.getString("jMenuItemInit.text")); // NOI18N
         jMenuItemInit.setName("jMenuItemInit"); // NOI18N
         jMenuItemInit.addActionListener(new java.awt.event.ActionListener() {
@@ -244,10 +248,7 @@ public class O3DIDEView extends FrameView {
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
-        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
-        aboutMenuItem.setName("aboutMenuItem"); // NOI18N
-        helpMenu.add(aboutMenuItem);
-
+        jMenuItemDebugParsing.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemDebugParsing.setText(resourceMap.getString("jMenuItemDebugParsing.text")); // NOI18N
         jMenuItemDebugParsing.setName("jMenuItemDebugParsing"); // NOI18N
         jMenuItemDebugParsing.addActionListener(new java.awt.event.ActionListener() {
@@ -256,6 +257,11 @@ public class O3DIDEView extends FrameView {
             }
         });
         helpMenu.add(jMenuItemDebugParsing);
+
+        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        aboutMenuItem.setName("aboutMenuItem"); // NOI18N
+        helpMenu.add(aboutMenuItem);
 
         menuBar.add(helpMenu);
 
@@ -301,44 +307,9 @@ public class O3DIDEView extends FrameView {
         jToolBarMain.setRollover(true);
         jToolBarMain.setName("jToolBarMain"); // NOI18N
 
-        jButtonLoadHTML.setIcon(resourceMap.getIcon("jButtonLoadHTML.icon")); // NOI18N
-        jButtonLoadHTML.setText(resourceMap.getString("jButtonLoadHTML.text")); // NOI18N
-        jButtonLoadHTML.setFocusable(false);
-        jButtonLoadHTML.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonLoadHTML.setName("jButtonLoadHTML"); // NOI18N
-        jButtonLoadHTML.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonLoadHTML.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonLoadHTMLActionPerformed(evt);
-            }
-        });
-        jToolBarMain.add(jButtonLoadHTML);
-
-        jButtonParseO3D.setText(resourceMap.getString("jButtonParseO3D.text")); // NOI18N
-        jButtonParseO3D.setFocusable(false);
-        jButtonParseO3D.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonParseO3D.setName("jButtonParseO3D"); // NOI18N
-        jButtonParseO3D.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonParseO3D.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonParseO3DActionPerformed(evt);
-            }
-        });
-        jToolBarMain.add(jButtonParseO3D);
-
-        jButtonRepaint.setText(resourceMap.getString("jButtonRepaint.text")); // NOI18N
-        jButtonRepaint.setFocusable(false);
-        jButtonRepaint.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonRepaint.setName("jButtonRepaint"); // NOI18N
-        jButtonRepaint.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonRepaint.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRepaintActionPerformed(evt);
-            }
-        });
-        jToolBarMain.add(jButtonRepaint);
-
+        jButtonRun.setIcon(resourceMap.getIcon("jButtonRun.icon")); // NOI18N
         jButtonRun.setText(resourceMap.getString("jButtonRun.text")); // NOI18N
+        jButtonRun.setToolTipText(resourceMap.getString("jButtonRun.toolTipText")); // NOI18N
         jButtonRun.setFocusable(false);
         jButtonRun.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonRun.setName("jButtonRun"); // NOI18N
@@ -349,6 +320,18 @@ public class O3DIDEView extends FrameView {
             }
         });
         jToolBarMain.add(jButtonRun);
+
+        jButtonClear.setText(resourceMap.getString("jButtonClear.text")); // NOI18N
+        jButtonClear.setFocusable(false);
+        jButtonClear.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonClear.setName("jButtonClear"); // NOI18N
+        jButtonClear.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearActionPerformed(evt);
+            }
+        });
+        jToolBarMain.add(jButtonClear);
 
         setComponent(mainPanel);
         setMenuBar(menuBar);
@@ -375,39 +358,15 @@ public class O3DIDEView extends FrameView {
 
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
-    private void jMenuItemTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTestActionPerformed
-        // TODO add your handling code here:
-        System.out.println(Utils.getJarLocation());
-        System.out.println(Utils.getUserDirLocation());
-
-    }//GEN-LAST:event_jMenuItemTestActionPerformed
-
-    private void jButtonLoadHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadHTMLActionPerformed
+    private void jMenuItemExampleCubeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExampleCubeActionPerformed
         // TODO add your handling code here:
         actions.loadHelloCube();
-    }//GEN-LAST:event_jButtonLoadHTMLActionPerformed
 
-    private void jButtonParseO3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonParseO3DActionPerformed
-        // TODO add your handling code here:
-        try {
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/base.js"));
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/util.js"));
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/math.js"));
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/rendergraph.js"));
-        } catch (IOException ex) {
-            Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButtonParseO3DActionPerformed
-
-    private void jButtonRepaintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRepaintActionPerformed
-        // TODO add your handling code here:
-        jScrollPaneEditor1.repaint();
-    }//GEN-LAST:event_jButtonRepaintActionPerformed
+    }//GEN-LAST:event_jMenuItemExampleCubeActionPerformed
 
     private void jButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunActionPerformed
         // TODO add your handling code here:
         actions.run();
-        
     }//GEN-LAST:event_jButtonRunActionPerformed
 
     private void jMenuItemHTMLBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHTMLBaseActionPerformed
@@ -430,17 +389,20 @@ public class O3DIDEView extends FrameView {
         jTextAreaEditor1.setText(o3dParser.getJsObject().toString());
     }//GEN-LAST:event_jMenuItemDebugParsingActionPerformed
 
+    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
+        // TODO add your handling code here:
+        jTextAreaEditor1.setText("");
+    }//GEN-LAST:event_jButtonClearActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonLoadHTML;
-    private javax.swing.JButton jButtonParseO3D;
-    private javax.swing.JButton jButtonRepaint;
+    private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonRun;
     private javax.swing.JMenuItem jMenuItemDebugParsing;
+    private javax.swing.JMenuItem jMenuItemExampleCube;
     private javax.swing.JMenuItem jMenuItemHTMLBase;
     private javax.swing.JMenuItem jMenuItemInit;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemRequire;
-    private javax.swing.JMenuItem jMenuItemTest;
     private javax.swing.JMenu jMenuTemplates;
     private javax.swing.JPanel jPanelEditor1;
     private javax.swing.JPopupMenu jPopupMenuSmartSense;
