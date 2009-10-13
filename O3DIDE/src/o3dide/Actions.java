@@ -31,6 +31,18 @@ public class Actions {
         this.js = js;
     }
 
+    public void parseO3DJSFiles(O3DJSParser o3dParser)
+    {
+        try {
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/base.js"));
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/util.js"));
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/math.js"));
+            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/rendergraph.js"));
+        } catch (IOException ex) {
+            Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void insertTemplate(String file) {
         String base = Utils.readCompleteRelativeFile(file);
         jt.insert(base, jt.getCaretPosition());
