@@ -43,12 +43,14 @@ class O3DJSParser {
     public void printExpr(ArrayList<String> al) {
         JSObject myJsObj = jsObject;
         // 1st get to correct object i.e.
-        for (int i = 1; i < al.size(); i+=2) {
-            if( ! ".".equals(al.get(i)) )
+        for (int i = 1; i < al.size(); i += 2) {
+            if (!".".equals(al.get(i))) {
                 break;
-            if( debug)
-                System.out.println(al.get(i-1));
-            myJsObj = myJsObj.getObject(al.get(i-1));
+            }
+            if (debug) {
+                System.out.println(al.get(i - 1));
+            }
+            myJsObj = myJsObj.getObject(al.get(i - 1));
         }
 
         int funcIndex = al.indexOf("function");
@@ -60,7 +62,7 @@ class O3DJSParser {
         } else if (al.size() > 0) {
             myJsObj.addObject(al.get(0));
         }
-        if (debug&&false) {
+        if (debug && false) {
             for (String string : al) {
                 System.out.print(string + " ");
             }
@@ -111,7 +113,7 @@ class O3DJSParser {
 
     public static void main(String[] args) throws IOException {
         O3DJSParser op = new O3DJSParser();
-        op.debug=true;
+        op.debug = true;
         //op.parse("C:\\IDE\\3D\\o3d samples\\o3djs\\util.js");
     }
 }

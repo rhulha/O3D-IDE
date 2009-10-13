@@ -25,19 +25,36 @@ public class Actions {
 
     private final JTextArea jt;
     private final JScrollPane js;
+    private File openFile = null;
+    private boolean editorDirty = false;
+
+    public File getOpenFile() {
+        return openFile;
+    }
+
+    public void setOpenFile(File openFile) {
+        this.openFile = openFile;
+    }
+
+    public boolean isEditorDirty() {
+        return editorDirty;
+    }
+
+    public void setEditorDirty(boolean isEditorDirty) {
+        this.editorDirty = isEditorDirty;
+    }
 
     public Actions(JTextArea jt, JScrollPane js) {
         this.jt = jt;
         this.js = js;
     }
 
-    public void parseO3DJSFiles(O3DJSParser o3dParser)
-    {
+    public void parseO3DJSFiles(O3DJSParser o3dParser) {
         try {
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/base.js"));
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/util.js"));
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/math.js"));
-            o3dParser.parse( new File(Utils.getBestJarLocation(), "o3djs/rendergraph.js"));
+            o3dParser.parse(new File(Utils.getBestJarLocation(), "o3djs/base.js"));
+            o3dParser.parse(new File(Utils.getBestJarLocation(), "o3djs/util.js"));
+            o3dParser.parse(new File(Utils.getBestJarLocation(), "o3djs/math.js"));
+            o3dParser.parse(new File(Utils.getBestJarLocation(), "o3djs/rendergraph.js"));
         } catch (IOException ex) {
             Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -70,9 +87,8 @@ public class Actions {
 
     void run() {
         try {
-            FileWriter fw = new FileWriter(Utils.getFileRelativeToMainJar("run.html"));
-            fw.write(jt.getText());
-            fw.close();
+            Utils.writeCompleteFile(jt.getText(), Utils.getFileRelativeToMainJar("run.html"));
+
             Desktop.getDesktop().open(Utils.getFileRelativeToMainJar("run.html"));
         } catch (IOException ex) {
             Logger.getLogger(Actions.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,5 +107,9 @@ public class Actions {
                 js.repaint();
             }
         });
+    }
+
+    void save() {
+        Utils.writeCompleteFile(jt.getText(), openFile);
     }
 }
