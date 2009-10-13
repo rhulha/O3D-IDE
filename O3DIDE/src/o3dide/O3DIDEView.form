@@ -122,6 +122,41 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenuTemplates">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="jMenuTemplates.text"/>
+            <Property name="name" type="java.lang.String" value="jMenuTemplates" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemHTMLBase">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItemHTMLBase.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItemHTMLBase" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemHTMLBaseActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRequire">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItemRequire.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItemRequire" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemRequireActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemInit">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItemInit.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItemInit" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemInitActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
             <Property name="text" type="java.lang.String" resourceKey="helpMenu.text"/>
@@ -143,6 +178,15 @@
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemDebugParsing">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItemDebugParsing.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItemDebugParsing" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemDebugParsingActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -265,16 +309,16 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRepaintActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonDebug">
+        <Component class="javax.swing.JButton" name="jButtonRun">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jButtonDebug.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="jButtonRun.text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="name" type="java.lang.String" value="jButtonDebug" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="jButtonRun" noResource="true"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDebugActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRunActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

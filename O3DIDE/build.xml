@@ -73,11 +73,12 @@
     -->
 
     <target name="-post-jar">
-       <copy file="o3djs/helloworld.html" flatten="true" todir="${dist.dir}/o3djs" />
-       <copy file="o3djs/base.js" flatten="true" todir="${dist.dir}/o3djs" />
-       <copy file="o3djs/util.js" flatten="true" todir="${dist.dir}/o3djs" />
-       <copy file="o3djs/math.js" flatten="true" todir="${dist.dir}/o3djs" />
-       <copy file="o3djs/rendergraph.js" flatten="true" todir="${dist.dir}/o3djs" />
+        <copy todir="${dist.dir}/o3djs">
+            <fileset dir="o3djs"/>
+        </copy>
+        <copy todir="${dist.dir}/templates">
+            <fileset dir="templates"/>
+        </copy>
     </target>
 
 </project>
