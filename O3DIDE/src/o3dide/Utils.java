@@ -6,6 +6,7 @@ package o3dide;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -43,24 +44,31 @@ public class Utils {
         return new File(Utils.getBestJarLocation(), relativePath);
     }
 
-    public static String readCompleteRelativeFile( String relativePath)
-    {
+    public static String readCompleteRelativeFile(String relativePath) {
         return readCompleteFile(getFileRelativeToMainJar(relativePath));
     }
 
-    public static String readCompleteFile( File f)
-    {
+    public static String readCompleteFile(File f) {
         byte buf[] = new byte[(int) f.length()];
         try {
             FileInputStream fis = new FileInputStream(f);
             fis.read(buf);
             fis.close();
-        } catch ( IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
         return new String(buf);
 
+    }
+
+    public static void writeCompleteFile(String s, File f) {
+        try {
+            FileWriter fw = new FileWriter(f);
+            fw.write(s);
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Actions.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

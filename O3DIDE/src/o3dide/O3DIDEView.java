@@ -134,7 +134,10 @@ public class O3DIDEView extends FrameView {
         jTextAreaEditor1 = new javax.swing.JTextArea();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        jMenuItemNew = new javax.swing.JMenuItem();
         jMenuItemOpen = new javax.swing.JMenuItem();
+        jMenuItemSave = new javax.swing.JMenuItem();
+        jSeparatorFile = new javax.swing.JSeparator();
         jMenuItemExampleCube = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         jMenuTemplates = new javax.swing.JMenu();
@@ -169,6 +172,11 @@ public class O3DIDEView extends FrameView {
         jTextAreaEditor1.setRows(5);
         jTextAreaEditor1.setMargin(new java.awt.Insets(2, 10, 2, 2));
         jTextAreaEditor1.setName("jTextAreaEditor1"); // NOI18N
+        jTextAreaEditor1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextAreaEditor1KeyTyped(evt);
+            }
+        });
         jScrollPaneEditor1.setViewportView(jTextAreaEditor1);
 
         jPanelEditor1.add(jScrollPaneEditor1, java.awt.BorderLayout.CENTER);
@@ -183,6 +191,16 @@ public class O3DIDEView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
+        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNew.setText(resourceMap.getString("jMenuItemNew.text")); // NOI18N
+        jMenuItemNew.setName("jMenuItemNew"); // NOI18N
+        jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemNewActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItemNew);
+
         jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemOpen.setText(resourceMap.getString("jMenuItemOpen.text")); // NOI18N
         jMenuItemOpen.setName("jMenuItemOpen"); // NOI18N
@@ -192,6 +210,19 @@ public class O3DIDEView extends FrameView {
             }
         });
         fileMenu.add(jMenuItemOpen);
+
+        jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSave.setText(resourceMap.getString("jMenuItemSave.text")); // NOI18N
+        jMenuItemSave.setName("jMenuItemSave"); // NOI18N
+        jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItemSave);
+
+        jSeparatorFile.setName("jSeparatorFile"); // NOI18N
+        fileMenu.add(jSeparatorFile);
 
         jMenuItemExampleCube.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemExampleCube.setText(resourceMap.getString("jMenuItemExampleCube.text")); // NOI18N
@@ -259,7 +290,6 @@ public class O3DIDEView extends FrameView {
         helpMenu.add(jMenuItemDebugParsing);
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
-        aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
@@ -345,15 +375,8 @@ public class O3DIDEView extends FrameView {
         int opt = fc.showOpenDialog(this.getFrame());
         if (opt == JFileChooser.APPROVE_OPTION) {
             File sf = fc.getSelectedFile();
-            byte buf[] = new byte[(int) sf.length()];
-            try {
-                FileInputStream fis = new FileInputStream(sf);
-                fis.read(buf);
-                fis.close();
-                jTextAreaEditor1.setText(new String(buf));
-            } catch (IOException ex) {
-                Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            jTextAreaEditor1.setText(Utils.readCompleteFile(sf));
+            actions.setOpenFile(sf);
         }
 
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
@@ -394,6 +417,23 @@ public class O3DIDEView extends FrameView {
         jTextAreaEditor1.setText("");
     }//GEN-LAST:event_jButtonClearActionPerformed
 
+    private void jMenuItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNewActionPerformed
+        // TODO add your handling code here:
+        jTextAreaEditor1.setText("");
+        actions.setOpenFile(null);
+    }//GEN-LAST:event_jMenuItemNewActionPerformed
+
+    private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
+        // TODO add your handling code here:
+        actions.save();
+        actions.setEditorDirty(false);
+    }//GEN-LAST:event_jMenuItemSaveActionPerformed
+
+    private void jTextAreaEditor1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextAreaEditor1KeyTyped
+        // TODO add your handling code here:
+        actions.setEditorDirty(true);
+    }//GEN-LAST:event_jTextAreaEditor1KeyTyped
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonRun;
@@ -401,12 +441,15 @@ public class O3DIDEView extends FrameView {
     private javax.swing.JMenuItem jMenuItemExampleCube;
     private javax.swing.JMenuItem jMenuItemHTMLBase;
     private javax.swing.JMenuItem jMenuItemInit;
+    private javax.swing.JMenuItem jMenuItemNew;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemRequire;
+    private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenu jMenuTemplates;
     private javax.swing.JPanel jPanelEditor1;
     private javax.swing.JPopupMenu jPopupMenuSmartSense;
     private javax.swing.JScrollPane jScrollPaneEditor1;
+    private javax.swing.JSeparator jSeparatorFile;
     private javax.swing.JTabbedPane jTabbedPaneEditor;
     private javax.swing.JTextArea jTextAreaEditor1;
     private javax.swing.JToolBar jToolBarMain;
