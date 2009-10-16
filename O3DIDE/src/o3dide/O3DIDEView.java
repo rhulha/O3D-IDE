@@ -3,10 +3,11 @@
  */
 package o3dide;
 
+import java.awt.Color;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.BadLocationException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -14,7 +15,6 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
 import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
@@ -38,15 +38,19 @@ public class O3DIDEView extends FrameView {
 
         initComponents();
 
-        actions = new Actions(jTextAreaEditor1, jScrollPaneEditor1);
+        textPane.setCaretColor(Color.WHITE);
+
+        jScrollPaneEditor.getVerticalScrollBar().setUnitIncrement(16);
+
+        actions = new Actions(textPane, jScrollPaneEditor);
         actions.parseO3DJSFiles(o3dParser);
 
         jList = new JList();
         jList.setModel(new DefaultListModel());
 
         jPopupMenuSmartSense.add(new JScrollPane(jList));
-        SmartSense smartSense = new SmartSense(jTextAreaEditor1, jList, o3dParser, jPopupMenuSmartSense);
-        jTextAreaEditor1.addKeyListener(smartSense);
+        SmartSense smartSense = new SmartSense(textPane, jList, o3dParser, jPopupMenuSmartSense);
+        textPane.addKeyListener(smartSense);
 
         jList.addKeyListener(smartSense);
 
@@ -130,8 +134,8 @@ public class O3DIDEView extends FrameView {
         mainPanel = new javax.swing.JPanel();
         jTabbedPaneEditor = new javax.swing.JTabbedPane();
         jPanelEditor1 = new javax.swing.JPanel();
-        jScrollPaneEditor1 = new javax.swing.JScrollPane();
-        jTextAreaEditor1 = new javax.swing.JTextArea();
+        jScrollPaneEditor = new javax.swing.JScrollPane();
+        textPane = new javax.swing.JTextPane();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItemNew = new javax.swing.JMenuItem();
@@ -155,7 +159,7 @@ public class O3DIDEView extends FrameView {
         jPopupMenuSmartSense = new javax.swing.JPopupMenu();
         jToolBarMain = new javax.swing.JToolBar();
         jButtonRun = new javax.swing.JButton();
-        jButtonClear = new javax.swing.JButton();
+        jButtonTest = new javax.swing.JButton();
 
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -166,22 +170,17 @@ public class O3DIDEView extends FrameView {
         jPanelEditor1.setName("jPanelEditor1"); // NOI18N
         jPanelEditor1.setLayout(new java.awt.BorderLayout());
 
-        jScrollPaneEditor1.setName("jScrollPaneEditor1"); // NOI18N
-
-        jTextAreaEditor1.setColumns(20);
-        jTextAreaEditor1.setRows(5);
-        jTextAreaEditor1.setMargin(new java.awt.Insets(2, 10, 2, 2));
-        jTextAreaEditor1.setName("jTextAreaEditor1"); // NOI18N
-        jTextAreaEditor1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextAreaEditor1KeyTyped(evt);
-            }
-        });
-        jScrollPaneEditor1.setViewportView(jTextAreaEditor1);
-
-        jPanelEditor1.add(jScrollPaneEditor1, java.awt.BorderLayout.CENTER);
+        jScrollPaneEditor.setName("jScrollPaneEditor"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(o3dide.O3DIDEApp.class).getContext().getResourceMap(O3DIDEView.class);
+        textPane.setBackground(resourceMap.getColor("textPane.background")); // NOI18N
+        textPane.setFont(resourceMap.getFont("textPane.font")); // NOI18N
+        textPane.setForeground(resourceMap.getColor("textPane.foreground")); // NOI18N
+        textPane.setName("textPane"); // NOI18N
+        jScrollPaneEditor.setViewportView(textPane);
+
+        jPanelEditor1.add(jScrollPaneEditor, java.awt.BorderLayout.CENTER);
+
         jTabbedPaneEditor.addTab(resourceMap.getString("jPanelEditor1.TabConstraints.tabTitle"), jPanelEditor1); // NOI18N
 
         mainPanel.add(jTabbedPaneEditor, java.awt.BorderLayout.CENTER);
@@ -351,17 +350,17 @@ public class O3DIDEView extends FrameView {
         });
         jToolBarMain.add(jButtonRun);
 
-        jButtonClear.setText(resourceMap.getString("jButtonClear.text")); // NOI18N
-        jButtonClear.setFocusable(false);
-        jButtonClear.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonClear.setName("jButtonClear"); // NOI18N
-        jButtonClear.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonClear.addActionListener(new java.awt.event.ActionListener() {
+        jButtonTest.setText(resourceMap.getString("jButtonTest.text")); // NOI18N
+        jButtonTest.setFocusable(false);
+        jButtonTest.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonTest.setName("jButtonTest"); // NOI18N
+        jButtonTest.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonClearActionPerformed(evt);
+                jButtonTestActionPerformed(evt);
             }
         });
-        jToolBarMain.add(jButtonClear);
+        jToolBarMain.add(jButtonTest);
 
         setComponent(mainPanel);
         setMenuBar(menuBar);
@@ -375,7 +374,7 @@ public class O3DIDEView extends FrameView {
         int opt = fc.showOpenDialog(this.getFrame());
         if (opt == JFileChooser.APPROVE_OPTION) {
             File sf = fc.getSelectedFile();
-            jTextAreaEditor1.setText(Utils.readCompleteFile(sf));
+            textPane.setText(Utils.readCompleteFile(sf));
             actions.setOpenFile(sf);
         }
 
@@ -409,34 +408,33 @@ public class O3DIDEView extends FrameView {
 
     private void jMenuItemDebugParsingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDebugParsingActionPerformed
         // TODO add your handling code here:
-        jTextAreaEditor1.setText(o3dParser.getJsObject().toString());
+        textPane.setText(o3dParser.getJsObject().toString());
     }//GEN-LAST:event_jMenuItemDebugParsingActionPerformed
 
-    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
-        // TODO add your handling code here:
-        jTextAreaEditor1.setText("");
-    }//GEN-LAST:event_jButtonClearActionPerformed
+    private void jButtonTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestActionPerformed
+        try {
+        } catch (Exception ex) {
+            Logger.getLogger(O3DIDEView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButtonTestActionPerformed
 
     private void jMenuItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNewActionPerformed
         // TODO add your handling code here:
-        jTextAreaEditor1.setText("");
+        textPane.setText("");
         actions.setOpenFile(null);
     }//GEN-LAST:event_jMenuItemNewActionPerformed
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
         // TODO add your handling code here:
-        actions.save();
+        if(actions.isEditorDirty() && actions.getOpenFile() != null)
+            actions.save();
         actions.setEditorDirty(false);
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
-    private void jTextAreaEditor1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextAreaEditor1KeyTyped
-        // TODO add your handling code here:
-        actions.setEditorDirty(true);
-    }//GEN-LAST:event_jTextAreaEditor1KeyTyped
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonRun;
+    private javax.swing.JButton jButtonTest;
     private javax.swing.JMenuItem jMenuItemDebugParsing;
     private javax.swing.JMenuItem jMenuItemExampleCube;
     private javax.swing.JMenuItem jMenuItemHTMLBase;
@@ -448,10 +446,9 @@ public class O3DIDEView extends FrameView {
     private javax.swing.JMenu jMenuTemplates;
     private javax.swing.JPanel jPanelEditor1;
     private javax.swing.JPopupMenu jPopupMenuSmartSense;
-    private javax.swing.JScrollPane jScrollPaneEditor1;
+    private javax.swing.JScrollPane jScrollPaneEditor;
     private javax.swing.JSeparator jSeparatorFile;
     private javax.swing.JTabbedPane jTabbedPaneEditor;
-    private javax.swing.JTextArea jTextAreaEditor1;
     private javax.swing.JToolBar jToolBarMain;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
@@ -459,6 +456,7 @@ public class O3DIDEView extends FrameView {
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JTextPane textPane;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
     private final Timer busyIconTimer;
