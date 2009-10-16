@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -23,7 +24,7 @@ import javax.swing.SwingUtilities;
  */
 public class Actions {
 
-    private final JTextArea jt;
+    private final JTextPane jt;
     private final JScrollPane js;
     private File openFile = null;
     private boolean editorDirty = false;
@@ -44,7 +45,7 @@ public class Actions {
         this.editorDirty = isEditorDirty;
     }
 
-    public Actions(JTextArea jt, JScrollPane js) {
+    public Actions(JTextPane jt, JScrollPane js) {
         this.jt = jt;
         this.js = js;
     }
@@ -60,13 +61,19 @@ public class Actions {
         }
     }
 
-    public void insertTemplate(String file) {
-        String base = Utils.readCompleteRelativeFile(file);
-        jt.insert(base, jt.getCaretPosition());
-        int cursor = jt.getText().indexOf("%CURSOR%");
-        jt.setCaretPosition(cursor);
-        jt.replaceRange("", cursor, cursor + "%CURSOR%".length());
-        jt.requestFocus();
+    public void insertTemplate(final String file) {
+        new ExceptionConverter() {
+            @Override
+            public void run() throws Exception {
+                String base = Utils.readCompleteRelativeFile(file);
+                jt.getDocument().insertString(jt.getCaretPosition(), base, null);
+
+                int cursor = jt.getDocument().getText(0, jt.getDocument().getLength()).indexOf("%CURSOR%");
+                jt.setCaretPosition(cursor);
+                jt.getDocument().remove(cursor, "%CURSOR%".length());
+                jt.requestFocus();
+            }
+        }.start();
     }
 
     void loadHelloWorld() {

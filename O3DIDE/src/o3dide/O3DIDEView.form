@@ -38,9 +38,9 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
               <SubComponents>
-                <Container class="javax.swing.JScrollPane" name="jScrollPaneEditor1">
+                <Container class="javax.swing.JScrollPane" name="jScrollPaneEditor">
                   <Properties>
-                    <Property name="name" type="java.lang.String" value="jScrollPaneEditor1" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="jScrollPaneEditor" noResource="true"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -53,18 +53,13 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="jTextAreaEditor1">
+                    <Component class="javax.swing.JTextPane" name="textPane">
                       <Properties>
-                        <Property name="columns" type="int" value="20"/>
-                        <Property name="rows" type="int" value="5"/>
-                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                          <Insets value="[2, 10, 2, 2]"/>
-                        </Property>
-                        <Property name="name" type="java.lang.String" value="jTextAreaEditor1" noResource="true"/>
+                        <Property name="background" type="java.awt.Color" resourceKey="textPane.background"/>
+                        <Property name="font" type="java.awt.Font" resourceKey="textPane.font"/>
+                        <Property name="foreground" type="java.awt.Color" resourceKey="textPane.foreground"/>
+                        <Property name="name" type="java.lang.String" value="textPane" noResource="true"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextAreaEditor1KeyTyped"/>
-                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -336,16 +331,16 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRunActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonClear">
+        <Component class="javax.swing.JButton" name="jButtonTest">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jButtonClear.text"/>
+            <Property name="text" type="java.lang.String" resourceKey="jButtonTest.text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="name" type="java.lang.String" value="jButtonClear" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="jButtonTest" noResource="true"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonClearActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonTestActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
