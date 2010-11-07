@@ -1,0 +1,47 @@
+// Events
+// init() once the page has finished loading.
+window.onload = init;
+
+// global variables
+var g_o3d;
+var g_math;
+var g_client;
+var g_viewInfo;
+var g_pack;
+var g_finished = false;  // for selenium testing
+
+/**
+ * Creates the client area.
+ */
+function init() {
+  o3djs.util.makeClients(initStep2);
+}
+
+/**
+ * Initializes O3D and loads the scene into the transform graph.
+ * @param {Array} clientElements Array of o3d object elements.
+ */
+function initStep2(clientElements) {
+  // Initializes global variables and libraries.
+  var o3dElement = clientElements[0];
+  g_o3d = o3dElement.o3d;
+  g_math = o3djs.math;
+  g_client = o3dElement.client;
+
+  // Creates a pack to manage our resources/assets
+  g_pack = g_client.createPack();
+
+  // Create the render graph for a view.
+  g_viewInfo = o3djs.rendergraph.createBasicView(
+      g_pack,
+      g_client.root,
+      g_client.renderGraphRoot);
+
+  // Creates a transform to put our data on.
+  var myDataRoot = g_pack.createObject('Transform');
+
+  // Connects our root to the client root.
+  myDataRoot.parent = g_client.root;
+
+  %CURSOR%
+}
